@@ -125,11 +125,17 @@ async function putUpdateInResponseAsync(
   console.log(updateBundlePath, 'updateBundlePath');
   console.log(runtimeVersion, 'runtimeVersion');
 
+  console.log(
+    await getExpoConfigAsync({
+      updateBundlePath,
+      runtimeVersion,
+    }),
+    'expoConfig'
+  );
   const expoConfig = await getExpoConfigAsync({
     updateBundlePath,
     runtimeVersion,
   });
-  console.log(expoConfig, 'expoConfig');
   const platformSpecificMetadata = metadataJson.fileMetadata[platform];
   console.log(platformSpecificMetadata, 'platformSpecificMetadata');
   const manifest = {
