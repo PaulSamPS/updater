@@ -110,7 +110,7 @@ async function putUpdateInResponseAsync(
   runtimeVersion: string,
   platform: string,
   protocolVersion: number
-): Promise<any> {
+): Promise<void> {
   const currentUpdateId = req.headers['expo-current-update-id'];
   const { metadataJson, createdAt, id } = await getMetadataAsync({
     updateBundlePath,
@@ -202,9 +202,6 @@ async function putUpdateInResponseAsync(
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
   res.end();
-  console.log(JSON.stringify(manifest));
-  console.log(JSON.stringify(res.getHeaders()));
-  return manifest;
 }
 
 async function putRollBackInResponseAsync(
