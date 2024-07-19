@@ -68,7 +68,6 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
   try {
     try {
       if (updateType === UpdateType.NORMAL_UPDATE) {
-        console.log('return this');
         await putUpdateInResponseAsync(
           req,
           res,
@@ -186,7 +185,7 @@ async function putUpdateInResponseAsync(
 
   const form = new FormData();
   form.append('manifest', JSON.stringify(manifest), {
-    contentType: 'application/json',
+    contentType: 'multipart/mixed',
     header: {
       'content-type': 'application/json; charset=utf-8',
       ...(signature ? { 'expo-signature': signature } : {}),
