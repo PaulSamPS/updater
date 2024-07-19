@@ -64,7 +64,6 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
   }
 
   const updateType = await getTypeOfUpdateAsync(updateBundlePath);
-  console.log(updateType, 'updateType');
 
   try {
     try {
@@ -117,14 +116,7 @@ async function putUpdateInResponseAsync(
     updateBundlePath,
     runtimeVersion,
   });
-  console.log('metadata', metadataJson);
-  console.log(protocolVersion, 'protocolVersion');
 
-  console.log(currentUpdateId, 'currentUpdateId');
-  console.log(convertSHA256HashToUUID(id), 'convertSHA256HashToUUID(id)');
-
-  // NoUpdateAvailable directive only supported on protocol version 1
-  // for protocol version 0, serve most recent update as normal
   if (currentUpdateId === convertSHA256HashToUUID(id) && protocolVersion === 1) {
     throw new NoUpdateAvailableError();
   }
@@ -176,7 +168,6 @@ async function putUpdateInResponseAsync(
       return;
     }
     const manifestString = JSON.stringify(manifest);
-    console.log(manifestString, 'manifestString');
     const hashSignature = signRSASHA256(manifestString, privateKey);
     const dictionary = convertToDictionaryItemsRepresentation({
       sig: hashSignature,
@@ -184,15 +175,13 @@ async function putUpdateInResponseAsync(
     });
     signature = serializeDictionary(dictionary);
   }
-  console.log(signature, 'signature');
+
   const assetRequestHeaders: { [key: string]: object } = {};
   [...manifest.assets, manifest.launchAsset].forEach((asset) => {
     assetRequestHeaders[asset.key] = {
       'test-header': 'test-header-value',
     };
   });
-
-  console.log(assetRequestHeaders, 'assetRequestHeaders');
 
   const form = new FormData();
   form.append('manifest', JSON.stringify(manifest), {
@@ -206,14 +195,13 @@ async function putUpdateInResponseAsync(
     contentType: 'application/json',
   });
 
-  console.log(`multipart/mixed; boundary=${form.getBoundary()}`, 'response');
   res.statusCode = 200;
   res.setHeader('expo-protocol-version', protocolVersion);
   res.setHeader('expo-sfv-version', 0);
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
-  console.log(res, 'res');
+  console.log({ status: res.statusCode, headers: res.getHeaders(), body: form.getBuffer() });
   res.end();
 }
 
@@ -274,6 +262,7 @@ async function putRollBackInResponseAsync(
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
+  console.log({ status: res.statusCode, headers: res.getHeaders(), body: form.getBuffer() });
   res.end();
 }
 
@@ -323,5 +312,6 @@ async function putNoUpdateAvailableInResponseAsync(
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
+  console.log({ status: res.statusCode, headers: res.getHeaders(), body: form.getBuffer() });
   res.end();
 }
