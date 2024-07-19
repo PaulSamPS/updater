@@ -110,7 +110,7 @@ async function putUpdateInResponseAsync(
   runtimeVersion: string,
   platform: string,
   protocolVersion: number
-): Promise<void> {
+): Promise<any> {
   const currentUpdateId = req.headers['expo-current-update-id'];
   const { metadataJson, createdAt, id } = await getMetadataAsync({
     updateBundlePath,
@@ -185,7 +185,7 @@ async function putUpdateInResponseAsync(
 
   const form = new FormData();
   form.append('manifest', JSON.stringify(manifest), {
-    contentType: 'multipart/mixed',
+    contentType: 'application/json',
     header: {
       'content-type': 'application/json; charset=utf-8',
       ...(signature ? { 'expo-signature': signature } : {}),
@@ -201,8 +201,8 @@ async function putUpdateInResponseAsync(
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
-  console.log({ status: res.statusCode, headers: res.getHeaders(), body: form.getBuffer() });
   res.end();
+  return manifest;
 }
 
 async function putRollBackInResponseAsync(
