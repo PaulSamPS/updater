@@ -68,7 +68,8 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
   try {
     try {
       if (updateType === UpdateType.NORMAL_UPDATE) {
-        return await putUpdateInResponseAsync(
+        console.log('return this');
+        await putUpdateInResponseAsync(
           req,
           res,
           updateBundlePath,
