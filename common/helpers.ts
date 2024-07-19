@@ -159,8 +159,11 @@ export async function getExpoConfigAsync({
   runtimeVersion: string;
 }): Promise<any> {
   try {
+    console.log(`${updateBundlePath}/expoConfig.json`, 'expoConfigPath');
     const expoConfigPath = `${updateBundlePath}/expoConfig.json`;
+    console.log(await fs.readFile(path.resolve(expoConfigPath), null), 'expoConfigBuffer');
     const expoConfigBuffer = await fs.readFile(path.resolve(expoConfigPath), null);
+    console.log(JSON.parse(expoConfigBuffer.toString('utf-8')), 'expoConfigJson');
     const expoConfigJson = JSON.parse(expoConfigBuffer.toString('utf-8'));
     return expoConfigJson;
   } catch (error) {
