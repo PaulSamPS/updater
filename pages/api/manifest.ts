@@ -122,12 +122,16 @@ async function putUpdateInResponseAsync(
   if (currentUpdateId === convertSHA256HashToUUID(id) && protocolVersion === 1) {
     throw new NoUpdateAvailableError();
   }
+  console.log(updateBundlePath, 'updateBundlePath');
+  console.log(runtimeVersion, 'runtimeVersion');
 
   const expoConfig = await getExpoConfigAsync({
     updateBundlePath,
     runtimeVersion,
   });
+  console.log(expoConfig, 'expoConfig');
   const platformSpecificMetadata = metadataJson.fileMetadata[platform];
+  console.log(platformSpecificMetadata, 'platformSpecificMetadata');
   const manifest = {
     id: convertSHA256HashToUUID(id),
     createdAt,

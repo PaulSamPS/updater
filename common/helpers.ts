@@ -79,13 +79,19 @@ type GetAssetMetadataArg =
     };
 
 export async function getAssetMetadataAsync(arg: GetAssetMetadataArg) {
+  console.log(`${arg.updateBundlePath}/${arg.filePath}`, 'assetFilePath');
   const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
+  console.log(await fs.readFile(path.resolve(assetFilePath), null), 'asset');
   const asset = await fs.readFile(path.resolve(assetFilePath), null);
   const assetHash = getBase64URLEncoding(createHash(asset, 'sha256', 'base64'));
   const key = createHash(asset, 'md5', 'hex');
   const keyExtensionSuffix = arg.isLaunchAsset ? 'bundle' : arg.ext;
   const contentType = arg.isLaunchAsset ? 'application/javascript' : mime.getType(arg.ext);
 
+  console.log(
+    `${process.env.HOSTNAME}/api/assets?asset=${assetFilePath}&runtimeVersion=${arg.runtimeVersion}&platform=${arg.platform}`,
+    'url'
+  );
   return {
     hash: assetHash,
     key,
