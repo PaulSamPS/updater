@@ -62,7 +62,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
 
   try {
     const asset = await fsPromises.readFile(assetPath, null);
-
+    console.log(asset);
     res.statusCode = 200;
     res.setHeader(
       'content-type',

@@ -80,19 +80,13 @@ type GetAssetMetadataArg =
     };
 
 export async function getAssetMetadataAsync(arg: GetAssetMetadataArg) {
-  console.log(`${arg.updateBundlePath}/${arg.filePath}`, 'assetFilePath');
   const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
-  console.log(await fs.readFile(path.resolve(assetFilePath), null), 'asset');
   const asset = await fs.readFile(path.resolve(assetFilePath), null);
   const assetHash = getBase64URLEncoding(createHash(asset, 'sha256', 'base64'));
   const key = createHash(asset, 'md5', 'hex');
   const keyExtensionSuffix = arg.isLaunchAsset ? 'bundle' : arg.ext;
   const contentType = arg.isLaunchAsset ? 'application/javascript' : mime.getType(arg.ext);
 
-  console.log(
-    `${process.env.HOSTNAME}/api/assets?asset=${assetFilePath}&runtimeVersion=${arg.runtimeVersion}&platform=${arg.platform}`,
-    'url'
-  );
   return {
     hash: assetHash,
     key,
@@ -160,12 +154,9 @@ export async function getExpoConfigAsync({
   runtimeVersion: string;
 }): Promise<any> {
   try {
-    console.log(`${updateBundlePath}/expoConfig.json`, 'expoConfigPath');
     const expoConfigPath = `${updateBundlePath}/expoConfig.json`;
-    console.log(await fs.readFile(path.resolve(expoConfigPath), null), 'expoConfigBuffer');
     const expoConfigBuffer = await fs.readFile(path.resolve(expoConfigPath), null);
     const utf8String = iconv.decode(expoConfigBuffer, 'utf-16');
-    console.log(JSON.parse(utf8String), 'expoConfigJson');
     const expoConfigJson = JSON.parse(utf8String);
     return expoConfigJson;
   } catch (error) {
