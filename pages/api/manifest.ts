@@ -197,7 +197,7 @@ async function putUpdateInResponseAsync(
   });
 
   res.statusCode = 200;
-  res.setHeader('expo-protocol-version', protocolVersion);
+  res.setHeader('expo-protocol-version', 0);
   res.setHeader('expo-sfv-version', 0);
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
