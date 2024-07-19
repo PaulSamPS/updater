@@ -64,6 +64,7 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
   }
 
   const updateType = await getTypeOfUpdateAsync(updateBundlePath);
+  console.log(updateType, 'updateType');
 
   try {
     try {
@@ -197,6 +198,7 @@ async function putUpdateInResponseAsync(
     contentType: 'application/json',
   });
 
+  console.log(`multipart/mixed; boundary=${form.getBoundary()}`, 'response');
   res.statusCode = 200;
   res.setHeader('expo-protocol-version', protocolVersion);
   res.setHeader('expo-sfv-version', 0);
