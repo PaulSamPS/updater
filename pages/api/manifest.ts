@@ -117,6 +117,7 @@ async function putUpdateInResponseAsync(
     updateBundlePath,
     runtimeVersion,
   });
+  console.log('metadata', metadataJson);
   console.log(protocolVersion, 'protocolVersion');
 
   console.log(currentUpdateId, 'currentUpdateId');
