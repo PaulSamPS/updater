@@ -1,6 +1,7 @@
 import crypto, { BinaryToTextEncoding } from 'crypto';
 import fsSync from 'fs';
 import fs from 'fs/promises';
+import * as iconv from 'iconv-lite';
 import mime from 'mime';
 import path from 'path';
 import { Dictionary } from 'structured-headers';
@@ -163,8 +164,9 @@ export async function getExpoConfigAsync({
     const expoConfigPath = `${updateBundlePath}/expoConfig.json`;
     console.log(await fs.readFile(path.resolve(expoConfigPath), null), 'expoConfigBuffer');
     const expoConfigBuffer = await fs.readFile(path.resolve(expoConfigPath), null);
-    console.log(JSON.parse(expoConfigBuffer.toString('utf-8')), 'expoConfigJson');
-    const expoConfigJson = JSON.parse(expoConfigBuffer.toString('utf-8'));
+    const utf8String = iconv.decode(expoConfigBuffer, 'utf-16');
+    console.log(JSON.parse(utf8String), 'expoConfigJson');
+    const expoConfigJson = JSON.parse(utf8String);
     return expoConfigJson;
   } catch (error) {
     throw new Error(
