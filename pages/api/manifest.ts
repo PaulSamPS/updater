@@ -175,6 +175,7 @@ async function putUpdateInResponseAsync(
       return;
     }
     const manifestString = JSON.stringify(manifest);
+    console.log(manifestString, 'manifestString');
     const hashSignature = signRSASHA256(manifestString, privateKey);
     const dictionary = convertToDictionaryItemsRepresentation({
       sig: hashSignature,
@@ -182,13 +183,15 @@ async function putUpdateInResponseAsync(
     });
     signature = serializeDictionary(dictionary);
   }
-
+  console.log(signature, 'signature');
   const assetRequestHeaders: { [key: string]: object } = {};
   [...manifest.assets, manifest.launchAsset].forEach((asset) => {
     assetRequestHeaders[asset.key] = {
       'test-header': 'test-header-value',
     };
   });
+
+  console.log(assetRequestHeaders, 'assetRequestHeaders');
 
   const form = new FormData();
   form.append('manifest', JSON.stringify(manifest), {
@@ -209,6 +212,7 @@ async function putUpdateInResponseAsync(
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
+  console.log(res, 'res');
   res.end();
 }
 
