@@ -158,7 +158,7 @@ async function putUpdateInResponseAsync(
       platform,
       ext: null,
     }),
-    metadata: {},
+    metadata: metadataJson,
     extra: {
       expoClient: expoConfig,
     },
