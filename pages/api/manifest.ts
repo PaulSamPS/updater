@@ -117,6 +117,10 @@ async function putUpdateInResponseAsync(
     updateBundlePath,
     runtimeVersion,
   });
+  console.log(protocolVersion, 'protocolVersion');
+
+  console.log(currentUpdateId, 'currentUpdateId');
+  console.log(convertSHA256HashToUUID(id), 'convertSHA256HashToUUID(id)');
 
   // NoUpdateAvailable directive only supported on protocol version 1
   // for protocol version 0, serve most recent update as normal
