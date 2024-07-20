@@ -18,6 +18,7 @@ import {
 } from '../../common/helpers';
 
 export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {
+  console.log('headers', req.headers);
   if (req.method !== 'GET') {
     res.statusCode = 405;
     res.json({ error: 'Expected GET.' });
