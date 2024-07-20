@@ -262,7 +262,7 @@ async function putRollBackInResponseAsync(
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
-  console.log({ status: res.statusCode, headers: res.getHeaders(), body: form.getBuffer() });
+  console.log(res, { status: res.statusCode, headers: res.getHeaders(), body: form.getBuffer() });
   res.end();
 }
 
