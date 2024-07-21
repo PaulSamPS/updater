@@ -18,7 +18,6 @@ import {
 } from '../../common/helpers';
 
 export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  console.log('headers', req.headers);
   if (req.method !== 'GET') {
     res.statusCode = 405;
     res.json({ error: 'Expected GET.' });
@@ -195,7 +194,6 @@ async function putUpdateInResponseAsync(
   form.append('extensions', JSON.stringify({ assetRequestHeaders }), {
     contentType: 'application/json',
   });
-
   res.statusCode = 200;
   res.setHeader('expo-protocol-version', 0);
   res.setHeader('expo-sfv-version', 0);

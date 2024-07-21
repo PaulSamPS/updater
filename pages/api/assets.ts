@@ -12,7 +12,7 @@ import {
 
 export default async function assetsEndpoint(req: NextApiRequest, res: NextApiResponse) {
   const { asset: assetName, runtimeVersion, platform } = req.query;
-
+  console.log('assets');
   if (!assetName || typeof assetName !== 'string') {
     res.statusCode = 400;
     res.json({ error: 'No asset name provided.' });
@@ -62,7 +62,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
 
   try {
     const asset = await fsPromises.readFile(assetPath, null);
-    console.log(asset);
+    console.log(asset, 'asset');
     res.statusCode = 200;
     res.setHeader(
       'content-type',
