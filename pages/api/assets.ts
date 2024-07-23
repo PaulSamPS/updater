@@ -1,9 +1,9 @@
-import fs from 'fs';
+import { resolve } from 'app-root-path';
+import fs from 'fs-extra';
 import fsPromises from 'fs/promises';
 import mime from 'mime';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nullthrows from 'nullthrows';
-import path from 'path';
 
 import {
   getLatestUpdateBundlePathForRuntimeVersionAsync,
@@ -47,7 +47,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     runtimeVersion,
   });
 
-  const assetPath = path.resolve(assetName);
+  const assetPath = resolve(assetName);
   const assetMetadata = metadataJson.fileMetadata[platform].assets.find(
     (asset: any) => asset.path === assetName.replace(`${updateBundlePath}/`, '')
   );

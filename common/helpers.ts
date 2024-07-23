@@ -1,5 +1,6 @@
+import { resolve } from 'app-root-path';
 import crypto, { BinaryToTextEncoding } from 'crypto';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import mime from 'mime';
 import path from 'path';
 import { Dictionary } from 'structured-headers';
@@ -35,7 +36,7 @@ export async function getPrivateKeyAsync() {
     return null;
   }
 
-  const pemBuffer = await fs.readFile(path.resolve(privateKeyPath));
+  const pemBuffer = await fs.readFile(resolve(privateKeyPath));
   return pemBuffer.toString('utf8');
 }
 
@@ -79,7 +80,7 @@ type GetAssetMetadataArg =
 
 export async function getAssetMetadataAsync(arg: GetAssetMetadataArg) {
   const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
-  const asset = await fs.readFile(path.resolve(assetFilePath), null);
+  const asset = await fs.readFile(resolve(assetFilePath));
   const assetHash = getBase64URLEncoding(createHash(asset, 'sha256', 'base64'));
   const key = createHash(asset, 'md5', 'hex');
   const keyExtensionSuffix = arg.isLaunchAsset ? 'bundle' : arg.ext;
@@ -124,7 +125,7 @@ export async function getMetadataAsync({
 }) {
   try {
     const metadataPath = `${updateBundlePath}/metadata.json`;
-    const updateMetadataBuffer = await fs.readFile(path.resolve(metadataPath), null);
+    const updateMetadataBuffer = await fs.readFile(resolve(metadataPath));
     const metadataJson = JSON.parse(updateMetadataBuffer.toString('utf-8'));
     const metadataStat = await fs.stat(metadataPath);
 
@@ -153,7 +154,7 @@ export async function getExpoConfigAsync({
 }): Promise<any> {
   try {
     const expoConfigPath = `${updateBundlePath}/expoConfig.json`;
-    const expoConfigBuffer = await fs.readFile(path.resolve(expoConfigPath));
+    const expoConfigBuffer = await fs.readFile(resolve(expoConfigPath));
     const expoConfigJson = JSON.parse(expoConfigBuffer.toString('utf-8'));
     return expoConfigJson;
   } catch (error) {

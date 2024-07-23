@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { serializeDictionary } from 'structured-headers';
 
