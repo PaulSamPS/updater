@@ -79,8 +79,13 @@ type GetAssetMetadataArg =
     };
 
 export async function getAssetMetadataAsync(arg: GetAssetMetadataArg) {
-  const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
+  // это для виндовс
+  // const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
+  // Это для линукс
+  const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`.replace(/\\/g, '/');
+  console.log(arg.filePath, 'assets');
   const asset = await fs.readFile(resolve(assetFilePath));
+  console.log(asset, 'asset');
   const assetHash = getBase64URLEncoding(createHash(asset, 'sha256', 'base64'));
   const key = createHash(asset, 'md5', 'hex');
   const keyExtensionSuffix = arg.isLaunchAsset ? 'bundle' : arg.ext;
