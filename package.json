@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env PRIVATE_KEY_PATH=code-signing-keys/private-key.pem next dev -p 5000",
-    "build": "cross-env PRIVATE_KEY_PATH=code-signing-keys/private-key.pem next build",
+    "build": "next build",
     "start": "PRIVATE_KEY_PATH=code-signing-keys/private-key.pem next start",
     "lint": "eslint common pages",
     "test": "jest",
