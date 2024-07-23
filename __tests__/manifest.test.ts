@@ -90,7 +90,7 @@ describe.each([['0'], ['1']])('protocol version %p', (protocolVersion) => {
         url: `${process.env.HOSTNAME}/api/assets?asset=updates/test/1/bundles/android-82adadb1fb6e489d04ad95fd79670deb.js&runtimeVersion=test&platform=android`,
       },
     ],
-  ])('returns latest %p manifest', async (platform, launchAssetExpectation) => {
+  ])('returns 1 %p manifest', async (platform, launchAssetExpectation) => {
     process.env.PRIVATE_KEY_PATH = 'updates/test/1/privatekey.pem';
 
     const firstAssetExpectation = {

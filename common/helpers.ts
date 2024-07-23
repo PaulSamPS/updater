@@ -1,7 +1,5 @@
 import crypto, { BinaryToTextEncoding } from 'crypto';
-import fsSync from 'fs';
-import fs from 'fs/promises';
-import * as iconv from 'iconv-lite';
+import * as fs from 'fs-extra';
 import mime from 'mime';
 import path from 'path';
 import { Dictionary } from 'structured-headers';
@@ -43,7 +41,7 @@ export async function getPrivateKeyAsync() {
 
 export async function getLatestUpdateBundlePathForRuntimeVersionAsync(runtimeVersion: string) {
   const updatesDirectoryForRuntimeVersion = `updates/${runtimeVersion}`;
-  if (!fsSync.existsSync(updatesDirectoryForRuntimeVersion)) {
+  if (!fs.existsSync(updatesDirectoryForRuntimeVersion)) {
     throw new Error('Unsupported runtime version');
   }
 
@@ -155,9 +153,8 @@ export async function getExpoConfigAsync({
 }): Promise<any> {
   try {
     const expoConfigPath = `${updateBundlePath}/expoConfig.json`;
-    const expoConfigBuffer = await fs.readFile(path.resolve(expoConfigPath), null);
-    const utf8String = iconv.decode(expoConfigBuffer, 'utf-16');
-    const expoConfigJson = JSON.parse(utf8String);
+    const expoConfigBuffer = await fs.readFile(path.resolve(expoConfigPath));
+    const expoConfigJson = JSON.parse(expoConfigBuffer.toString('utf-8'));
     return expoConfigJson;
   } catch (error) {
     throw new Error(

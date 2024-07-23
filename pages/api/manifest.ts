@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import fs from 'fs/promises';
+import * as fs from 'fs-extra';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { serializeDictionary } from 'structured-headers';
 
@@ -200,6 +200,7 @@ async function putUpdateInResponseAsync(
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
+  console.log('work');
   res.end();
 }
 

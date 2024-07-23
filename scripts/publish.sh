@@ -1,18 +1,3 @@
-#while getopts d: flag
-#do
-#    case "${flag}" in
-#        d) directory=${OPTARG};;
-#    esac
-#done
-#
-#cd ../expo-updates-client
-#npx expo export
-#cd ../expo-updates-server
-#rm -rf updates/$directory/
-#cp -r ../expo-updates-client/dist/ updates/$directory
-#
-#node ./scripts/exportClientExpoConfig.js > updates/$directory/expoConfig.json
-
 while getopts d: flag
 do
     case "${flag}" in
@@ -20,22 +5,28 @@ do
     esac
 done
 
-cd ../expo-updates-client
+cd ../eas-test-app
 npx expo export
 cd ../expo-updates-server
 rm -rf updates/$directory/
-cp -r ../expo-updates-client/dist/ updates/$directory
+cp -r ../eas-test-app/dist/ updates/$directory
 
-# Создаем функцию для выполнения команды node и ожидания её завершения
-run_node_script() {
-    node ./scripts/exportClientExpoConfig.js > updates/$directory/expoConfig.json
-}
-
-# Запускаем функцию и ждем её завершения
-run_node_script &
-wait
-
-echo "Скрипт выполнен успешно и expoConfig.json создан."
+#node ./scripts/exportClientExpoConfig.js > updates/$directory/expoConfig.json
+#
+#while getopts d: flag
+#do
+#    case "${flag}" in
+#        d) directory=${OPTARG};;
+#    esac
+#done
+#
+#cd ../eas-test-app
+#npx expo export
+#cd ../expo-updates-server
+#rm -rf updates/$directory/
+#cp -r ../eas-test-app/dist/ updates/$directory
+#
+#echo "Скрипт выполнен успешно и expoConfig.json создан."
 
 #!/bin/bash
 #
