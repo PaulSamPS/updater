@@ -70,6 +70,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     res.json({ error: `Asset "${assetName}" does not exist.` });
     return;
   }
+  console.log(assetMetadata, '123');
 
   try {
     const asset = await fs.readFile(assetPath);
