@@ -55,8 +55,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
 
   const assetMetadata = metadataJson.fileMetadata[platform].assets
     .map((asset: any) => {
-      const formattedPath = asset.path.replace(/\\/g, '/');
-      return formattedPath;
+      return asset.path.replace(/\\/g, '/');
     })
     .find((asset: any) => {
       const targetPath = assetName.replace(`${updateBundlePath}/`, '');
@@ -72,7 +71,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     return;
   }
 
-  console.log(nullthrows(mime.getType(assetMetadata.ext)), 'nullthrows');
+  console.log(assetMetadata, 'nullthrows');
   try {
     const asset = await fs.readFile(assetPath);
     res.statusCode = 200;
