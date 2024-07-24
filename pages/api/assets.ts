@@ -9,6 +9,12 @@ import {
   getMetadataAsync,
 } from '../../common/helpers';
 
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
+
 export default async function assetsEndpoint(req: NextApiRequest, res: NextApiResponse) {
   const { asset: assetName, runtimeVersion, platform } = req.query;
   if (!assetName || typeof assetName !== 'string') {

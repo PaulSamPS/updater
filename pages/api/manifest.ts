@@ -17,6 +17,12 @@ import {
   createNoUpdateAvailableDirectiveAsync,
 } from '../../common/helpers';
 
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
+
 export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     res.statusCode = 405;
