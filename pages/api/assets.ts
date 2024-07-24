@@ -72,7 +72,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     return;
   }
 
-  console.log(isLaunchAsset, 'assetMetadata');
+  console.log(nullthrows(mime.getType(assetMetadata.ext)), 'nullthrows');
   try {
     const asset = await fs.readFile(assetPath);
     res.statusCode = 200;
