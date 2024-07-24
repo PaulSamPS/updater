@@ -80,10 +80,10 @@ type GetAssetMetadataArg =
 
 export async function getAssetMetadataAsync(arg: GetAssetMetadataArg) {
   // Это для виндовс
-  // const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
+  const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
 
   // Это для линукс
-  const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`.replace(/\\/g, '/');
+  // const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`.replace(/\\/g, '/');
   const asset = await fs.readFile(path.resolve(assetFilePath), null);
   const assetHash = getBase64URLEncoding(createHash(asset, 'sha256', 'base64'));
   const key = createHash(asset, 'md5', 'hex');
