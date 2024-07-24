@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
+import fs from 'fs';
+import fsPromises from 'fs/promises';
 import mime from 'mime';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nullthrows from 'nullthrows';
 import path from 'path';
-
 import {
   getLatestUpdateBundlePathForRuntimeVersionAsync,
   getMetadataAsync,
@@ -17,6 +17,7 @@ export const config = {
 
 export default async function assetsEndpoint(req: NextApiRequest, res: NextApiResponse) {
   const { asset: assetName, runtimeVersion, platform } = req.query;
+
   if (!assetName || typeof assetName !== 'string') {
     res.statusCode = 400;
     res.json({ error: 'No asset name provided.' });
@@ -57,11 +58,11 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     .map((asset: any) => {
       return asset.path.replace(/\\/g, '/');
     })
+    .filter((asset: any) => asset !== null && asset !== undefined)
     .find((asset: any) => {
       const targetPath = assetName.replace(`${updateBundlePath}/`, '');
       return asset === targetPath;
     });
-
   const isLaunchAsset =
     metadataJson.fileMetadata[platform].bundle === assetName.replace(`${updateBundlePath}/`, '');
 
@@ -70,14 +71,15 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     res.json({ error: `Asset "${assetName}" does not exist.` });
     return;
   }
-  console.log(assetMetadata, '123');
 
   try {
-    const asset = await fs.readFile(assetPath);
+    const asset = await fsPromises.readFile(assetPath, null);
+
+    console.log(asset, ' asset');
     res.statusCode = 200;
     res.setHeader(
       'content-type',
-      isLaunchAsset ? 'application/javascript' : nullthrows(mime.getType(assetMetadata.ext))
+      isLaunchAsset ? 'application/javascript' : mime.getType(assetMetadata.ext)!
     );
     res.end(asset);
   } catch (error) {
