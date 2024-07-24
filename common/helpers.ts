@@ -1,6 +1,6 @@
-import { resolve } from 'app-root-path';
 import crypto, { BinaryToTextEncoding } from 'crypto';
-import fs from 'fs-extra';
+import fsSync from 'fs';
+import fs from 'fs/promises';
 import mime from 'mime';
 import path from 'path';
 import { Dictionary } from 'structured-headers';
@@ -36,13 +36,13 @@ export async function getPrivateKeyAsync() {
     return null;
   }
 
-  const pemBuffer = await fs.readFile(resolve(privateKeyPath));
+  const pemBuffer = await fs.readFile(path.resolve(privateKeyPath));
   return pemBuffer.toString('utf8');
 }
 
 export async function getLatestUpdateBundlePathForRuntimeVersionAsync(runtimeVersion: string) {
   const updatesDirectoryForRuntimeVersion = `updates/${runtimeVersion}`;
-  if (!fs.existsSync(updatesDirectoryForRuntimeVersion)) {
+  if (!fsSync.existsSync(updatesDirectoryForRuntimeVersion)) {
     throw new Error('Unsupported runtime version');
   }
 
@@ -83,9 +83,7 @@ export async function getAssetMetadataAsync(arg: GetAssetMetadataArg) {
   // const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
   // Это для линукс
   const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`.replace(/\\/g, '/');
-  console.log(arg.filePath, 'assets');
-  const asset = await fs.readFile(resolve(assetFilePath));
-  console.log(asset, 'asset');
+  const asset = await fs.readFile(path.resolve(assetFilePath), null);
   const assetHash = getBase64URLEncoding(createHash(asset, 'sha256', 'base64'));
   const key = createHash(asset, 'md5', 'hex');
   const keyExtensionSuffix = arg.isLaunchAsset ? 'bundle' : arg.ext;
@@ -130,7 +128,7 @@ export async function getMetadataAsync({
 }) {
   try {
     const metadataPath = `${updateBundlePath}/metadata.json`;
-    const updateMetadataBuffer = await fs.readFile(resolve(metadataPath));
+    const updateMetadataBuffer = await fs.readFile(path.resolve(metadataPath), null);
     const metadataJson = JSON.parse(updateMetadataBuffer.toString('utf-8'));
     const metadataStat = await fs.stat(metadataPath);
 
@@ -159,7 +157,7 @@ export async function getExpoConfigAsync({
 }): Promise<any> {
   try {
     const expoConfigPath = `${updateBundlePath}/expoConfig.json`;
-    const expoConfigBuffer = await fs.readFile(resolve(expoConfigPath));
+    const expoConfigBuffer = await fs.readFile(path.resolve(expoConfigPath), null);
     const expoConfigJson = JSON.parse(expoConfigBuffer.toString('utf-8'));
     return expoConfigJson;
   } catch (error) {
