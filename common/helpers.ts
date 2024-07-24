@@ -79,8 +79,9 @@ type GetAssetMetadataArg =
     };
 
 export async function getAssetMetadataAsync(arg: GetAssetMetadataArg) {
-  // это для виндовс
+  // Это для виндовс
   // const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`;
+
   // Это для линукс
   const assetFilePath = `${arg.updateBundlePath}/${arg.filePath}`.replace(/\\/g, '/');
   const asset = await fs.readFile(path.resolve(assetFilePath), null);
