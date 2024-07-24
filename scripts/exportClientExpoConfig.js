@@ -1,7 +1,7 @@
 const ExpoConfig = require('@expo/config');
 const path = require('path');
 
-const projectDir = path.join(__dirname, '..', '..', 'eas-test-app');
+const projectDir = path.join(__dirname, '..', '..', 'superapp');
 
 const { exp } = ExpoConfig.getConfig(projectDir, {
   skipSDKVersionRequirement: true,
