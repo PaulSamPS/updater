@@ -17,6 +17,7 @@ export const config = {
 
 export default async function assetsEndpoint(req: NextApiRequest, res: NextApiResponse) {
   const { asset: assetName, runtimeVersion, platform } = req.query;
+
   if (!assetName || typeof assetName !== 'string') {
     res.statusCode = 400;
     res.json({ error: 'No asset name provided.' });
@@ -40,9 +41,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     updateBundlePath = await getLatestUpdateBundlePathForRuntimeVersionAsync(runtimeVersion);
   } catch (error: any) {
     res.statusCode = 404;
-    res.json({
-      error: error.message,
-    });
+    res.json({ error: error.message });
     return;
   }
 
@@ -54,9 +53,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
   const assetPath = path.resolve(assetName);
 
   const assetMetadata = metadataJson.fileMetadata[platform].assets
-    .map((asset: any) => {
-      return asset.path.replace(/\\/g, '/');
-    })
+    .map((asset: any) => asset.path.replace(/\\/g, '/'))
     .find((asset: any) => {
       const targetPath = assetName.replace(`${updateBundlePath}/`, '');
       return asset === targetPath;
@@ -71,9 +68,14 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     return;
   }
 
-  console.log(assetMetadata, 'nullthrows');
+  if (!assetMetadata || !assetMetadata.ext) {
+    res.statusCode = 500;
+    res.json({ error: 'Invalid asset metadata.' });
+    return;
+  }
+
   try {
-    const asset = await fs.readFile(assetPath);
+    const asset = await fs.promises.readFile(assetPath);
     res.statusCode = 200;
     res.setHeader(
       'content-type',
