@@ -41,11 +41,21 @@
    # Путь до папки сервера
    REMOTE_PATH="/root/Desktop/updater/updates/"
    ```
+5. *В мобильном приложении в* `app.json` *добавить:*
+   ```json
+     {
+        "runtimeVersion": "1",
+        "updates": {
+        "url": "http://адрес сервера/api/manifest",
+        "fallbackToCacheTimeout": 30000
+        }
+     }
+   ```
 
 ## *Подготовка обновления вариант `1`*
 + <span style="color:#edeb5c">*Этот вариант более предпочтительный т.к нету смысла хранить предыдущие обновления тут*
 
-+ <span style="color:#fc6656">**Название папки вложенная в updates обзяаательно должна совпадать с текущей версией `runtimeVersion`!!!**
++ <span style="color:#fc6656">**Название папки вложенная в updates обзяаательно должна совпадать с текущей версией `runtimeVersion` в мп app.json!!!**
 
 В `package.json` `expo-config` *захардкодить* `runtimeVersion` и `updateVersion`:
 
