@@ -8,6 +8,6 @@ done
 cd ../superapp
 npx expo export --platform android
 cd ../updater
+mkdir -p updates/$directory/
 rm -rf updates/$directory/
-#mkdir -p updates/$directory/
 cp -r ../superapp/dist/ updates/$directory
