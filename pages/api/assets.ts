@@ -75,11 +75,14 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
   try {
     const asset = await fsPromises.readFile(assetPath, null);
 
-    console.log(asset, ' asset');
     res.statusCode = 200;
     res.setHeader(
       'content-type',
-      isLaunchAsset ? 'application/javascript' : mime.getType(assetMetadata.ext)!
+      isLaunchAsset
+        ? 'application/javascript'
+        : assetMetadata
+        ? mime.getType(assetMetadata.ext) ?? 'application/octet-stream'
+        : 'application/octet-stream'
     );
     res.end(asset);
   } catch (error) {

@@ -6,7 +6,7 @@ do
 done
 
 cd ../superapp
-npx expo export --platform ios
+npx expo export --platform android
 cd ../updater
 rm -rf updates/$directory/
 #mkdir -p updates/$directory/
