@@ -23,13 +23,13 @@
 
    ```shell
    // Путь и название мобильного приложения
-   cd ../мобильное приложение
+   cd ../superapp
    
    // Название папки сервера 
-   cd ../сервер
+   cd ../updater
    
    // Название мобильного приложения
-   cp -r ../мобильное приложение/dist/ updates/$directory
+   cp -r ../superapp/dist/ updates/$directory
    ```
 4. *В скрипте* `scripts/copyToServer.sh` *указать свои данные для подключения к серверу по ssh*
 
@@ -37,7 +37,7 @@
    # Имя пользователя
    REMOTE_USER=root
    # Адрес сервера
-   REMOTE_HOST="195.133.1.164"
+   REMOTE_HOST="128.0.0.1"
    # Путь до папки сервера
    REMOTE_PATH="/root/Desktop/updater/updates/"
    ```
