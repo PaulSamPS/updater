@@ -17,6 +17,10 @@
 
 ## Создание обновления
 
+в package.json expo-config указать `runtimeVersion` и `updateVersion`:
+
+`node ./scripts/exportClientExpoConfig.js > updates/runtimeVersin/updateVersion/expoConfig.json`
+
 Для создания обновления выполните следующую команду:
 ```bash
 yarn expo-updates

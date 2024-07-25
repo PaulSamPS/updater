@@ -58,6 +58,8 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
     return;
   }
 
+  console.log(runtimeVersion, 'runtimeVersion');
+
   let updateBundlePath: string;
   try {
     updateBundlePath = await getLatestUpdateBundlePathForRuntimeVersionAsync(runtimeVersion);
