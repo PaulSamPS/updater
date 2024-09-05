@@ -5,14 +5,13 @@
 ```
 
 ### *Настройка окружения*
->**Это делается один раз при первом запуске и больше не изменяется!**
 
 1. ###### *Добавить в package.json 'scripts' мобильного приложения'*
     ```json
-      "expo-update": "npx expo export && node ./scripts/exportClientExpoConfig.js > dist/expoConfig.json"
+      "expo-update": "npx expo export && node ./scripts/exportClientExpoConfig.js > dist/expoConfig.json && ./scripts/gzip.sh"
     ```
 
-2. ###### *Переместить из папки scripts в папку scripts  в корне мп*
+2. ###### *Переместить папку scripts  в корень мп*
 
     ```javascript
     exportClientExpoConfig.js
@@ -39,14 +38,14 @@
 
 5. ###### *Переместить папку code-signing в корень мп*
 
+6. ###### *Установить зависимости в мп*
+
 ### *Подготовка обновления*
-1. 
+#### *указать в gzip.sh UPLOAD_URL="http://`адрес сервера`/api/update*
 ```shell
+# запуск скрипта из мп
   npm run expo-update
 ```
-
-2. 
-  #### *запустить скрипт gzip.sh предварительно указав UPLOAD_URL="http://`адрес сервера`/api/update*
 
 ### *Запуск сервера*
 
