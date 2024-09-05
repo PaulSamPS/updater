@@ -206,6 +206,7 @@ async function putUpdateInResponseAsync(
   res.setHeader('cache-control', 'private, max-age=0');
   res.setHeader('content-type', `multipart/mixed; boundary=${form.getBoundary()}`);
   res.write(form.getBuffer());
+  console.log('dobe');
   res.end();
 }
 

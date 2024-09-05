@@ -1,115 +1,55 @@
 ### *Установка зависимостей*
 
-```bash
+```shell
     yarn install
 ```
 
 ### *Настройка окружения*
 >**Это делается один раз при первом запуске и больше не изменяется!**
 
-1. ###### *Укажите путь до приложения, откуда скрипт заберет данные:*
+1. ###### *Добавить в package.json 'scripts' мобильного приложения'*
+    ```json
+      "expo-update": "npx expo export && node ./scripts/exportClientExpoConfig.js > dist/expoConfig.json"
+    ```
+
+2. ###### *Переместить из папки scripts в папку scripts  в корне мп*
+
     ```javascript
-    // scripts/xportClientExpoConfig.js
-    const projectDir = 'путь/до/вашего/приложения';
+    exportClientExpoConfig.js
+   gzip.sh
+
+3. ###### *Относительный путь папки scripts до папки мп*
+
+    ```javascript
+    const projectDir = path.join(__dirname, '..', '..', 'имя__папки_мп');
     ```
-
-2. ###### *Укажите адрес сервера обновлений:*
-
-    ```dotenv
-   # http://10.0.2.2:5000
-    HOSTNAME=адрес/сервера/обновлений;
-    ```
-3. ###### *В скрипте* `scripts/publish.sh` *указать свои данные*
-
-   ```shell
-   // Путь и название мобильного приложения
-   cd ../superapp
    
-   // Название папки сервера 
-   cd ../updater
-   
-   // Название мобильного приложения
-   cp -r ../superapp/dist/ updates/$directory
-   ```
-4. ###### *В скрипте* `scripts/copyToServer.sh` *указать свои данные для подключения к серверу по ssh*
-
-   ```dotenv
-   # Имя пользователя
-   REMOTE_USER=root
-   # Адрес сервера
-   REMOTE_HOST="128.0.0.1"
-   # Путь до папки сервера
-   REMOTE_PATH="/root/Desktop/updater/updates/"
-   ```
-5. ###### *В мобильном приложении в* `app.json` *добавить:*
+4. ###### *В мобильном приложении в* `app.json` *добавить:*
    ```json
-     {
-        "runtimeVersion": "1",
-        "updates": {
-        "url": "http://адрес сервера/api/manifest",
-        "fallbackToCacheTimeout": 30000
-        }
-     }
+     "updates": {
+      "url": "http://10.0.2.2:5000/api/manifest",
+      "fallbackToCacheTimeout": 30000,
+      "enabled": true,
+      "codeSigningCertificate": "./code-signing/development-certificate.pem",
+      "codeSigningMetadata": {
+        "keyid": "main",
+        "alg": "rsa-v3-sha256"
+      }
    ```
 
-### *Подготовка обновления вариант `1`*
-+ <span style="color:#edeb5c">*Этот вариант более предпочтительный т.к нету смысла хранить предыдущие обновления тут*
+5. ###### *Переместить папку code-signing в корень мп*
 
-+ <span style="color:#fc6656">**Название папки вложенная в updates обзяаательно должна совпадать с текущей версией `runtimeVersion` в мп app.json!!!**
-
-В `package.json` `expo-config` *захардкодить* `runtimeVersion` и `updateVersion`:
-
-###### *Пример:*
-```json
-{
-   "expo-config": "node ./scripts/exportClientExpoConfig.js > updates/1/latest/expoConfig.json"
-}
+### *Подготовка обновления*
+1. 
+```shell
+  npm run expo-update
 ```
 
-В `package.json` `expo-publish` *захардкодить* `runtimeVersion` и `updateVersion`:
+2. 
+  #### *запустить скрипт gzip.sh предварительно указав UPLOAD_URL="http://`адрес сервера`/api/update*
 
-###### *Пример:*
-```json
-{
-   "expo-config": "./scripts/publish.sh -d 1/latest && yarn expo-config"
-}
+### *Запуск сервера*
+
+```shell
+   yarn start
 ```
-
-### *Подготовка обновления вариант `2`*
-
-###### *Создать папку в* `updates` *с текущей версией* `runtime`.  
-
-###### *Закоментировать в* `scripts/publish.sh` *строчку* `rm -rf updates/$directory/`
-
-###### В `package.json` `expo-config` указать `runtimeVersion` и `updateVersion`:
-
-###### *Пример:*
-```json
-{
-   "expo-config": "node ./scripts/exportClientExpoConfig.js > updates/runtimeVersion/updateVersion/expoConfig.json"
-}
-```
-
-###### В `package.json` `expo-publish` *указать* `runtimeVersion` и `updateVersion`:
-
-###### *Пример:*
-```json
-{
-   "expo-config": "./scripts/publish.sh -d runtimeVersion/updateVersion && yarn expo-config"
-}
-```
-
-### *Запуск генерации обновления и копирование на сервер*
-   ```shell
-   # Создает локально файлы обновления
-    yarn expo-publish   
-   ```
-
-   ```shell
-   # Копирует файлы на сервер
-      yarn export-server
-   ```
-    
-### *Получение нового обновления на удаленном сервере*  
-###### *Запустить сервер* `yarn dev`.
-

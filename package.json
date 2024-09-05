@@ -3,30 +3,28 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env PRIVATE_KEY_PATH=code-signing-keys/private-key.pem next dev -p 5000",
+    "dev": "cross-env PRIVATE_KEY_PATH=code-signing-keys/development-private-key.pem next dev -p 5000",
     "build": "next build",
-    "start": "PRIVATE_KEY_PATH=code-signing-keys/private-key.pem next start",
+    "start": "cross-env PRIVATE_KEY_PATH=code-signing-keys/development-private-key.pem next start -p 5000",
     "lint": "eslint common pages",
-    "test": "jest",
-    "expo-config": "node ./scripts/exportClientExpoConfig.js > updates/1/latest/expoConfig.json",
-    "expo-publish": "./scripts/publish.sh -d 1/latest&& yarn expo-config",
-    "export-server": "./scripts/copyToServer.sh",
-    "expo-publish-rollback": "mktouch() { mkdir -p $(dirname $1) && touch $1; }; cd ../expo-updates-server && mktouch updates/1/$(date +%s)/rollback",
-    "expo-publish-test": "./scripts/publish.sh -d test/$(date +%s)"
+    "test": "jest"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
     "form-data": "^4.0.0",
+    "formidable": "^3.5.1",
     "fs-extra": "^11.2.0",
     "mime": "^2.5.2",
     "next": "13.4.20-canary.13",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "structured-headers": "^0.4.1"
+    "structured-headers": "^0.4.1",
+    "tar": "^7.4.3"
   },
   "devDependencies": {
     "@expo/config": "^7.0.3",
     "@expo/multipart-body-parser": "^1.1.0",
+    "@types/formidable": "^3.4.5",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^27.4.1",
     "@types/mime": "^2.0.3",
